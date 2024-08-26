@@ -1,0 +1,136 @@
+{
+  "id": 23391,
+  "cate": "prometheus",
+  "cluster": "victoriametrics",
+  "datasource_id": 1,
+  "group_id": 1,
+  "group_name": "Default Busi Group",
+  "hash": "3a0d4cc4942774c0b599cca2e773a609",
+  "rule_id": 2,
+  "rule_name": "Machine load - high memory, please pay attention - categraf",
+  "rule_note": "",
+  "rule_prod": "metric",
+  "rule_algo": "",
+  "severity": 3,
+  "prom_for_duration": 10,
+  "prom_ql": "mem_available_percent \u003c 80",
+  "rule_config": {
+    "inhibit": false,
+    "queries": [
+      {
+        "keys": {
+          "labelKey": "",
+          "valueKey": ""
+        },
+        "prom_ql": "mem_available_percent \u003c 80",
+        "severity": 3
+      },
+      {
+        "keys": {
+          "labelKey": "",
+          "valueKey": ""
+        },
+        "prom_ql": "mem_available_percent \u003c 90",
+        "severity": 2
+      },
+      {
+        "keys": {
+          "labelKey": "",
+          "valueKey": ""
+        },
+        "prom_ql": "mem_available_percent \u003c 95",
+        "severity": 1
+      }
+    ]
+  },
+  "prom_eval_interval": 5,
+  "callbacks": [],
+  "runbook_url": "",
+  "notify_recovered": 1,
+  "notify_channels": [
+    "email",
+    "dingtalk",
+    "wecom"
+  ],
+  "notify_groups": [
+    "2"
+  ],
+  "notify_groups_obj": [
+    {
+      "id": 2,
+      "name": "alert-group",
+      "note": "",
+      "create_at": 1698399245,
+      "create_by": "root",
+      "update_at": 1698399286,
+      "update_by": "root"
+    }
+  ],
+  "target_ident": "categraf-center",
+  "target_note": "",
+  "trigger_time": 1698633246,
+  "trigger_value": "72.83022",
+  "tags": [
+    "__name__=mem_available_percent",
+    "ident=categraf-center",
+    "rulename=Machine load - high memory, please pay attention - categraf",
+    "source=categraf"
+  ],
+  "tags_map": {
+    "__name__": "mem_available_percent",
+    "ident": "categraf-center",
+    "rulename": "Machine load - high memory, please pay attention - categraf",
+    "source": "categraf"
+  },
+  "annotations": {},
+  "is_recovered": false,
+  "notify_users_obj": [
+    {
+      "id": 1,
+      "username": "root",
+      "nickname": "超管",
+      "phone": "",
+      "email": "",
+      "portrait": "",
+      "roles": [
+        "Admin"
+      ],
+      "contacts": {},
+      "maintainer": 0,
+      "create_at": 1698305839,
+      "create_by": "system",
+      "update_at": 1698305839,
+      "update_by": "system",
+      "admin": true
+    },
+    {
+      "id": 2,
+      "username": "wecom",
+      "nickname": "",
+      "phone": "",
+      "email": "",
+      "portrait": "",
+      "roles": [
+        "Guest"
+      ],
+      "contacts": {
+        "wecom_robot_token": "http://182.92.117.41:38000/wecomchan?sendkey=things2023\u0026msg_type=text\u0026msg="
+      },
+      "maintainer": 0,
+      "create_at": 1698399274,
+      "create_by": "root",
+      "update_at": 1698399849,
+      "update_by": "root",
+      "admin": false
+    }
+  ],
+  "last_eval_time": 1698633246,
+  "last_escalation_notify_time": 0,
+  "last_sent_time": 1698633246,
+  "notify_cur_number": 8,
+  "first_trigger_time": 1698632826,
+  "extra_config": null,
+  "status": 0,
+  "claimant": "",
+  "sub_rule_id": 0
+}

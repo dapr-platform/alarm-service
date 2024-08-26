@@ -1,0 +1,1835 @@
+basePath: /swagger/alarm-service
+definitions:
+  common.Page:
+    properties:
+      items: {}
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  common.Response:
+    properties:
+      data: {}
+      msg:
+        type: string
+      status:
+        type: integer
+    type: object
+  entity.AlarmIdsReq:
+    properties:
+      ids:
+        description: 告警ID，以,分隔,例如：1,2,3
+        type: string
+    type: object
+  entity.AlarmQuery:
+    properties:
+      end_time:
+        description: 查询结束时间 <=，为空则为当前时间 格式 yyyy-MM-dd HH:mm:ss
+        type: string
+      levels:
+        description: 告警级别，为"" 则为全部级别， 以,分隔,例如：1,2,3
+        type: string
+      object_ids:
+        description: 告警对象ID，为"" 则为全部对象，以,分隔,例如：1,2,3
+        type: string
+      start_time:
+        description: 查询开始时间 >,为空则为当天0点, 格式 yyyy-MM-dd HH:mm:ss
+        type: string
+      status:
+        description: 告警状态，为"" 则为全部状态，以,分隔,例如：0,1, 0:已清除 1:未清除
+        type: string
+      sub_types:
+        description: 告警子类型，为"" 则为全部子类型，以,分隔,例如：1,2,3
+        type: string
+      types:
+        description: 告警类型，为""则为全部类型，以,分隔,例如：1,2,3
+        type: string
+    type: object
+  entity.GoCronEvent:
+    properties:
+      result:
+        type: string
+      status:
+        type: string
+      taskId:
+        type: integer
+      taskName:
+        type: string
+    type: object
+  model.Alarm:
+    properties:
+      ack_flag:
+        description: 是否确认
+        type: integer
+      ack_time:
+        description: 确认时间
+        type: string
+      ack_user:
+        description: 确认人
+        type: string
+      archive_flag:
+        description: 是否归档，归档后才转移到历史告警
+        type: integer
+      archive_time:
+        description: 归档时间
+        type: string
+      archive_user:
+        description: 归档人id
+        type: string
+      clear_time:
+        description: 清除时间
+        type: string
+      clear_user:
+        description: 清除人
+        type: string
+      create_at:
+        description: 创建时间
+        type: string
+      description:
+        description: 告警描述
+        type: string
+      dn:
+        description: dn
+        type: string
+      event_time:
+        description: 告警时间
+        type: string
+      extra_data:
+        description: extra_data
+        type: string
+      id:
+        description: id
+        type: string
+      level:
+        description: 级别,1:严重,2:一般,3:警告,4:描述
+        type: integer
+      location:
+        description: 告警位置
+        type: string
+      object_id:
+        description: 告警对象id
+        type: string
+      object_name:
+        description: 告警对象名称
+        type: string
+      status:
+        description: 0:已清除告警,1:未清除告警
+        type: integer
+      title:
+        description: 告警标题
+        type: string
+      total_count:
+        description: 发生次数
+        type: integer
+      type:
+        description: 告警类型:1:系统,2:通讯
+        type: integer
+      updated_at:
+        description: 更新时间
+        type: string
+    type: object
+  model.Collector_script:
+    properties:
+      id:
+        description: id
+        type: string
+      script:
+        description: script
+        type: string
+    type: object
+  model.Event:
+    properties:
+      dn:
+        description: dn
+        type: string
+      event_extra:
+        description: event_extra
+        type: string
+      event_text:
+        description: event_text
+        type: string
+      event_time:
+        description: event_time
+        type: string
+      event_title:
+        description: event_title
+        type: string
+      id:
+        description: id
+        type: string
+      level:
+        description: level
+        type: integer
+      object_id:
+        description: object_id
+        type: string
+      status:
+        description: status
+        type: integer
+    type: object
+  model.History_alarm:
+    properties:
+      ack_flag:
+        description: 是否确认
+        type: integer
+      ack_time:
+        description: 确认时间
+        type: string
+      ack_user:
+        description: 确认人
+        type: string
+      archive_flag:
+        description: 是否归档，归档后才转移到历史告警
+        type: integer
+      archive_time:
+        description: 归档时间
+        type: string
+      archive_user:
+        description: 归档人id
+        type: string
+      clear_time:
+        description: 清除时间
+        type: string
+      clear_user:
+        description: 清除人
+        type: string
+      create_at:
+        description: 创建时间
+        type: string
+      description:
+        description: 告警描述
+        type: string
+      dn:
+        description: dn
+        type: string
+      event_time:
+        description: 告警时间
+        type: string
+      extra_data:
+        description: extra_data
+        type: string
+      id:
+        description: id
+        type: string
+      level:
+        description: 级别
+        type: integer
+      location:
+        description: 告警位置
+        type: string
+      object_id:
+        description: 告警对象id
+        type: string
+      object_name:
+        description: 告警对象名称
+        type: string
+      status:
+        description: 0:已清除告警,1:未清除告警
+        type: integer
+      title:
+        description: 告警标题
+        type: string
+      total_count:
+        description: 发生次数
+        type: integer
+      type:
+        description: 告警类型
+        type: integer
+      updated_at:
+        description: 更新时间
+        type: string
+    type: object
+info:
+  contact: {}
+  description: alarm-service API
+  title: alarm-service API
+  version: "1.0"
+paths:
+  /alarm:
+    get:
+      description: query objects
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        type: string
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: dn
+        in: query
+        name: dn
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      - description: type
+        in: query
+        name: type
+        type: string
+      - description: description
+        in: query
+        name: description
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      - description: event_time
+        in: query
+        name: event_time
+        type: string
+      - description: create_at
+        in: query
+        name: create_at
+        type: string
+      - description: updated_at
+        in: query
+        name: updated_at
+        type: string
+      - description: object_id
+        in: query
+        name: object_id
+        type: string
+      - description: object_name
+        in: query
+        name: object_name
+        type: string
+      - description: location
+        in: query
+        name: location
+        type: string
+      - description: total_count
+        in: query
+        name: total_count
+        type: string
+      - description: clear_time
+        in: query
+        name: clear_time
+        type: string
+      - description: ack_flag
+        in: query
+        name: ack_flag
+        type: string
+      - description: archive_flag
+        in: query
+        name: archive_flag
+        type: string
+      - description: ack_time
+        in: query
+        name: ack_time
+        type: string
+      - description: clear_user
+        in: query
+        name: clear_user
+        type: string
+      - description: ack_user
+        in: query
+        name: ack_user
+        type: string
+      - description: archive_time
+        in: query
+        name: archive_time
+        type: string
+      - description: archive_user
+        in: query
+        name: archive_user
+        type: string
+      - description: extra_data
+        in: query
+        name: extra_data
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Alarm'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: query objects
+      tags:
+      - Alarm
+    post:
+      consumes:
+      - application/json
+      description: save
+      parameters:
+      - description: object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/model.Alarm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Alarm'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: save
+      tags:
+      - Alarm
+  /alarm-ack:
+    post:
+      description: 告警确认
+      parameters:
+      - description: ids
+        in: body
+        name: alarm_ids
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AlarmIdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{status:0}'
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 告警确认
+      tags:
+      - Alarm
+  /alarm-archive:
+    post:
+      description: 告警归档
+      parameters:
+      - description: ids
+        in: body
+        name: alarm_clear
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AlarmIdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{status:0}'
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 告警归档
+      tags:
+      - Alarm
+  /alarm-clear:
+    post:
+      description: 告警清除
+      parameters:
+      - description: ids
+        in: body
+        name: alarm_clear
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AlarmIdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{status:0}'
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 告警清除
+      tags:
+      - Alarm
+  /alarm-query:
+    post:
+      description: 查询告警
+      parameters:
+      - description: current page, default is 1
+        in: query
+        name: _page
+        type: integer
+      - description: page size,default is 10
+        in: query
+        name: _page_size
+        type: integer
+      - description: query condition
+        in: body
+        name: alarm_query
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AlarmQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 实例的数组
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/common.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/model.Alarm'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 查询告警
+      tags:
+      - Alarm
+  /alarm/{id}:
+    delete:
+      description: delete
+      parameters:
+      - description: 实例id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Alarm'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: delete
+      tags:
+      - Alarm
+  /alarm/batch-delete:
+    post:
+      consumes:
+      - application/json
+      description: batch delete
+      parameters:
+      - description: id array
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch delete
+      tags:
+      - Alarm
+  /alarm/batch-upsert:
+    post:
+      consumes:
+      - application/json
+      description: batch update
+      parameters:
+      - description: objects array
+        in: body
+        name: entities
+        required: true
+        schema:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch update
+      tags:
+      - Alarm
+  /alarm/groupby:
+    get:
+      description: GroupBy, for example,  _select=level, then return  {level_val1:sum1,level_val2:sum2},
+        _where can input status=0
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        required: true
+        type: string
+      - description: _where
+        in: query
+        name: _where
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    additionalProperties: true
+                    type: object
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: GroupBy
+      tags:
+      - Alarm
+  /alarm/page:
+    get:
+      description: page query, _page(from 1 begin), _page_size, _order, and others
+        fields, status=1, name=$like.%CAM%
+      parameters:
+      - description: current page
+        in: query
+        name: _page
+        required: true
+        type: integer
+      - description: page size
+        in: query
+        name: _page_size
+        required: true
+        type: integer
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: dn
+        in: query
+        name: dn
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      - description: type
+        in: query
+        name: type
+        type: string
+      - description: description
+        in: query
+        name: description
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      - description: event_time
+        in: query
+        name: event_time
+        type: string
+      - description: create_at
+        in: query
+        name: create_at
+        type: string
+      - description: updated_at
+        in: query
+        name: updated_at
+        type: string
+      - description: object_id
+        in: query
+        name: object_id
+        type: string
+      - description: object_name
+        in: query
+        name: object_name
+        type: string
+      - description: location
+        in: query
+        name: location
+        type: string
+      - description: total_count
+        in: query
+        name: total_count
+        type: string
+      - description: clear_time
+        in: query
+        name: clear_time
+        type: string
+      - description: ack_flag
+        in: query
+        name: ack_flag
+        type: string
+      - description: archive_flag
+        in: query
+        name: archive_flag
+        type: string
+      - description: ack_time
+        in: query
+        name: ack_time
+        type: string
+      - description: clear_user
+        in: query
+        name: clear_user
+        type: string
+      - description: ack_user
+        in: query
+        name: ack_user
+        type: string
+      - description: archive_time
+        in: query
+        name: archive_time
+        type: string
+      - description: archive_user
+        in: query
+        name: archive_user
+        type: string
+      - description: extra_data
+        in: query
+        name: extra_data
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/common.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/model.Alarm'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: page query
+      tags:
+      - Alarm
+  /collector-script:
+    get:
+      description: query objects
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        type: string
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: script
+        in: query
+        name: script
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Collector_script'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: query objects
+      tags:
+      - Collector_script
+    post:
+      consumes:
+      - application/json
+      description: save
+      parameters:
+      - description: object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/model.Collector_script'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Collector_script'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: save
+      tags:
+      - Collector_script
+  /collector-script/{id}:
+    delete:
+      description: delete
+      parameters:
+      - description: 实例id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Collector_script'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: delete
+      tags:
+      - Collector_script
+  /collector-script/batch-delete:
+    post:
+      consumes:
+      - application/json
+      description: batch delete
+      parameters:
+      - description: id array
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch delete
+      tags:
+      - Collector_script
+  /collector-script/batch-upsert:
+    post:
+      consumes:
+      - application/json
+      description: batch update
+      parameters:
+      - description: objects array
+        in: body
+        name: entities
+        required: true
+        schema:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch update
+      tags:
+      - Collector_script
+  /collector-script/groupby:
+    get:
+      description: GroupBy, for example,  _select=level, then return  {level_val1:sum1,level_val2:sum2},
+        _where can input status=0
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        required: true
+        type: string
+      - description: _where
+        in: query
+        name: _where
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    additionalProperties: true
+                    type: object
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: GroupBy
+      tags:
+      - Collector_script
+  /collector-script/page:
+    get:
+      description: page query, _page(from 1 begin), _page_size, _order, and others
+        fields, status=1, name=$like.%CAM%
+      parameters:
+      - description: current page
+        in: query
+        name: _page
+        required: true
+        type: integer
+      - description: page size
+        in: query
+        name: _page_size
+        required: true
+        type: integer
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: script
+        in: query
+        name: script
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/common.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/model.Collector_script'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: page query
+      tags:
+      - Collector_script
+  /event:
+    get:
+      description: query objects
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        type: string
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: dn
+        in: query
+        name: dn
+        type: string
+      - description: event_title
+        in: query
+        name: event_title
+        type: string
+      - description: event_text
+        in: query
+        name: event_text
+        type: string
+      - description: event_time
+        in: query
+        name: event_time
+        type: string
+      - description: object_id
+        in: query
+        name: object_id
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: event_extra
+        in: query
+        name: event_extra
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Event'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: query objects
+      tags:
+      - Event
+    post:
+      consumes:
+      - application/json
+      description: save
+      parameters:
+      - description: object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/model.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Event'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: save
+      tags:
+      - Event
+  /event/{id}:
+    delete:
+      description: delete
+      parameters:
+      - description: 实例id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Event'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: delete
+      tags:
+      - Event
+  /event/batch-delete:
+    post:
+      consumes:
+      - application/json
+      description: batch delete
+      parameters:
+      - description: id array
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch delete
+      tags:
+      - Event
+  /event/batch-upsert:
+    post:
+      consumes:
+      - application/json
+      description: batch update
+      parameters:
+      - description: objects array
+        in: body
+        name: entities
+        required: true
+        schema:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch update
+      tags:
+      - Event
+  /event/groupby:
+    get:
+      description: GroupBy, for example,  _select=level, then return  {level_val1:sum1,level_val2:sum2},
+        _where can input status=0
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        required: true
+        type: string
+      - description: _where
+        in: query
+        name: _where
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    additionalProperties: true
+                    type: object
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: GroupBy
+      tags:
+      - Event
+  /event/page:
+    get:
+      description: page query, _page(from 1 begin), _page_size, _order, and others
+        fields, status=1, name=$like.%CAM%
+      parameters:
+      - description: current page
+        in: query
+        name: _page
+        required: true
+        type: integer
+      - description: page size
+        in: query
+        name: _page_size
+        required: true
+        type: integer
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: dn
+        in: query
+        name: dn
+        type: string
+      - description: event_title
+        in: query
+        name: event_title
+        type: string
+      - description: event_text
+        in: query
+        name: event_text
+        type: string
+      - description: event_time
+        in: query
+        name: event_time
+        type: string
+      - description: object_id
+        in: query
+        name: object_id
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: event_extra
+        in: query
+        name: event_extra
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/common.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/model.Event'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: page query
+      tags:
+      - Event
+  /gocron-event:
+    post:
+      description: 接收gocron事件
+      parameters:
+      - description: 消息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/entity.GoCronEvent'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功消息
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 接收gocron事件
+      tags:
+      - Message
+  /grafana-event:
+    post:
+      description: 接收grafana事件
+      parameters:
+      - description: 消息
+        in: body
+        name: req
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功消息
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 接收grafana事件
+      tags:
+      - Message
+  /history-alarm:
+    get:
+      description: query objects
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        type: string
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: dn
+        in: query
+        name: dn
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      - description: type
+        in: query
+        name: type
+        type: string
+      - description: description
+        in: query
+        name: description
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      - description: event_time
+        in: query
+        name: event_time
+        type: string
+      - description: create_at
+        in: query
+        name: create_at
+        type: string
+      - description: updated_at
+        in: query
+        name: updated_at
+        type: string
+      - description: object_id
+        in: query
+        name: object_id
+        type: string
+      - description: object_name
+        in: query
+        name: object_name
+        type: string
+      - description: location
+        in: query
+        name: location
+        type: string
+      - description: total_count
+        in: query
+        name: total_count
+        type: string
+      - description: clear_time
+        in: query
+        name: clear_time
+        type: string
+      - description: ack_flag
+        in: query
+        name: ack_flag
+        type: string
+      - description: archive_flag
+        in: query
+        name: archive_flag
+        type: string
+      - description: ack_time
+        in: query
+        name: ack_time
+        type: string
+      - description: clear_user
+        in: query
+        name: clear_user
+        type: string
+      - description: ack_user
+        in: query
+        name: ack_user
+        type: string
+      - description: archive_time
+        in: query
+        name: archive_time
+        type: string
+      - description: archive_user
+        in: query
+        name: archive_user
+        type: string
+      - description: extra_data
+        in: query
+        name: extra_data
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.History_alarm'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: query objects
+      tags:
+      - History_alarm
+    post:
+      consumes:
+      - application/json
+      description: save
+      parameters:
+      - description: object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/model.History_alarm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.History_alarm'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: save
+      tags:
+      - History_alarm
+  /history-alarm/{id}:
+    delete:
+      description: delete
+      parameters:
+      - description: 实例id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: object
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.History_alarm'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: delete
+      tags:
+      - History_alarm
+  /history-alarm/batch-delete:
+    post:
+      consumes:
+      - application/json
+      description: batch delete
+      parameters:
+      - description: id array
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch delete
+      tags:
+      - History_alarm
+  /history-alarm/batch-upsert:
+    post:
+      consumes:
+      - application/json
+      description: batch update
+      parameters:
+      - description: objects array
+        in: body
+        name: entities
+        required: true
+        schema:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: batch update
+      tags:
+      - History_alarm
+  /history-alarm/groupby:
+    get:
+      description: GroupBy, for example,  _select=level, then return  {level_val1:sum1,level_val2:sum2},
+        _where can input status=0
+      parameters:
+      - description: _select
+        in: query
+        name: _select
+        required: true
+        type: string
+      - description: _where
+        in: query
+        name: _where
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  items:
+                    additionalProperties: true
+                    type: object
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: GroupBy
+      tags:
+      - History_alarm
+  /history-alarm/page:
+    get:
+      description: page query, _page(from 1 begin), _page_size, _order, and others
+        fields, status=1, name=$like.%CAM%
+      parameters:
+      - description: current page
+        in: query
+        name: _page
+        required: true
+        type: integer
+      - description: page size
+        in: query
+        name: _page_size
+        required: true
+        type: integer
+      - description: order
+        in: query
+        name: _order
+        type: string
+      - description: id
+        in: query
+        name: id
+        type: string
+      - description: dn
+        in: query
+        name: dn
+        type: string
+      - description: title
+        in: query
+        name: title
+        type: string
+      - description: type
+        in: query
+        name: type
+        type: string
+      - description: description
+        in: query
+        name: description
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: level
+        in: query
+        name: level
+        type: string
+      - description: event_time
+        in: query
+        name: event_time
+        type: string
+      - description: create_at
+        in: query
+        name: create_at
+        type: string
+      - description: updated_at
+        in: query
+        name: updated_at
+        type: string
+      - description: object_id
+        in: query
+        name: object_id
+        type: string
+      - description: object_name
+        in: query
+        name: object_name
+        type: string
+      - description: location
+        in: query
+        name: location
+        type: string
+      - description: total_count
+        in: query
+        name: total_count
+        type: string
+      - description: clear_time
+        in: query
+        name: clear_time
+        type: string
+      - description: ack_flag
+        in: query
+        name: ack_flag
+        type: string
+      - description: archive_flag
+        in: query
+        name: archive_flag
+        type: string
+      - description: ack_time
+        in: query
+        name: ack_time
+        type: string
+      - description: clear_user
+        in: query
+        name: clear_user
+        type: string
+      - description: ack_user
+        in: query
+        name: ack_user
+        type: string
+      - description: archive_time
+        in: query
+        name: archive_time
+        type: string
+      - description: archive_user
+        in: query
+        name: archive_user
+        type: string
+      - description: extra_data
+        in: query
+        name: extra_data
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: objects array
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/common.Page'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/model.History_alarm'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: page query
+      tags:
+      - History_alarm
+  /nightingale-event:
+    post:
+      description: 接收nightingale事件
+      parameters:
+      - description: 消息
+        in: body
+        name: req
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功消息
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 接收nightingale事件
+      tags:
+      - Message
+  /send-event:
+    post:
+      description: 发送事件,测试使用。时间格式为 2006-01-02T15:04:05
+      parameters:
+      - description: 发送消息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/model.Alarm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功消息
+          schema:
+            $ref: '#/definitions/common.Response'
+        "500":
+          description: 错误code和错误信息
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 发送事件
+      tags:
+      - Message
+swagger: "2.0"
