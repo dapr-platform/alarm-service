@@ -19,7 +19,8 @@ jobs:
       uses: docker/setup-buildx-action@v2
       with:
         driver: docker-container
-
+    - name: Inspect buildx builder
+      run: docker buildx inspect --bootstrap
     - name: Log in to Docker Hub
       uses: aliyun/acr-login@v1
       with:
