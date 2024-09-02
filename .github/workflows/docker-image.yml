@@ -16,30 +16,11 @@ jobs:
     - name: Check out the repo
       uses: actions/checkout@v4
 
-    - name: Setup docker
-      uses: crazy-max/ghaction-setup-docker@v2
-      with:
-        version: v24.0.6
-        daemon-config: |
-          {
-            "features": {
-            "containerd-snapshotter": true
-            }
-          }
-    - name: Setup QEMU
-      uses: docker/setup-qemu-action@v3
-      with:
-        platforms: linux/amd64,linux/arm64
 
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-      with:
-        driver: docker-container
-        driver-opts: image=moby/buildkit:buildx-stable-1,network=host
 
     - name: Inspect buildx builder
       run: docker buildx inspect --bootstrap
+
     - name: Log in to Docker Hub
       uses: aliyun/acr-login@v1
       with:
@@ -53,7 +34,6 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        driver: docker-container
         context: .
         platforms: linux/amd64,linux/arm64
         file: Dockerfile
