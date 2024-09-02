@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Remove existing builder
-      run: docker buildx rm builder-53d02845-b5ed-42ab-a685-8a160686c6a4
+    - name: Check out the repo
+      uses: actions/checkout@v4
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@v3
       with:
         driver: docker-container
     - name: Inspect buildx builder
@@ -30,8 +29,7 @@ jobs:
         username: ${{ secrets.ACR_USER }}
         password: ${{ secrets.ACR_PASSWOWRD }}
 
-    - name: Check out the repo
-      uses: actions/checkout@v4
+
 
     - name: Build and push
       uses: docker/build-push-action@v5
